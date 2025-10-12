@@ -1,0 +1,155 @@
+{
+	"info": {
+		"_postman_id": "61886277-5ff1-4457-8da0-2a78f21ec286",
+		"name": "DevOps",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10760156"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let token = pm.response.json().access_token;",
+							"pm.environment.set(\"token\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"identity\": \"test-user\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/token",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Block email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test-user@email.com\",\n    \"app_uuid\": \"{{$randomUUID}}\",\n    \"blocked_reason\": \"Test reason\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/blacklists",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"blacklists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate email",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/blacklists/:email",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"blacklists",
+						":email"
+					],
+					"variable": [
+						{
+							"key": "email",
+							"value": "test-user@email.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset DB",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/blacklists",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"blacklists"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

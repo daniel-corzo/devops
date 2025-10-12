@@ -7,6 +7,7 @@ from src.resource.black_lists_resource import (
     BlackListsResource,
     BlackListsEmailResource,
 )
+from src.resource.auth import AuthResource
 from src.models import Base, engine
 
 app = Flask(__name__)
@@ -43,6 +44,7 @@ api = Api(app)
 
 api.add_resource(BlackListsResource, "/blacklists")
 api.add_resource(BlackListsEmailResource, "/blacklists/<string:email>")
+api.add_resource(AuthResource, "/auth/token")
 
 if __name__ == "__main__":
     app.run(debug=True)
