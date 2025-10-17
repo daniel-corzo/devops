@@ -4,8 +4,6 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 
 ENV PYTHONPATH=/app
-ENV AWS_ACCESS_KEY=
-ENV AWS_SECRET_ACCESS_KEY=
 
 EXPOSE 5000
 CMD ["gunicorn", "-b", "0.0.0.0:5000", "src.app:app"]
