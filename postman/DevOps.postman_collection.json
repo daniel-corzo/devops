@@ -1,11 +1,70 @@
 {
 	"info": {
-		"_postman_id": "61886277-5ff1-4457-8da0-2a78f21ec286",
-		"name": "DevOps",
+		"_postman_id": "ed8701d5-4348-4da9-9023-d5307ad065c5",
+		"name": "DevOps API",
+		"description": "API que permite gestionar la lista negra global de la empresa multinacional. El objetivo de este  \nmicroservicio es que cientos de sistemas internos puedan consultar si un email está en la lista negra  \nglobal de la empresa o no, así como agregar emails a la lista negra global.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10760156"
+		"_exporter_id": "38886553",
+		"_collection_link": "https://www.postman.com/cloud-uniandes/workspace/devops/collection/38886553-ed8701d5-4348-4da9-9023-d5307ad065c5?action=share&source=collection_link&creator=38886553"
 	},
 	"item": [
+		{
+			"name": "Health",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "Permite consultar el estado del microservicio de blacklist."
+			},
+			"response": [
+				{
+					"name": "Ok",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"domain": "",
+							"path": ""
+						}
+					],
+					"body": "{\n    \"timestamp\": \"2025-10-19T20:29:20.692451\"\n}"
+				}
+			]
+		},
 		{
 			"name": "Login",
 			"event": [
@@ -46,9 +105,50 @@
 						"auth",
 						"token"
 					]
-				}
+				},
+				"description": "Permite realizar el login en el microservicio y obtener un token para ser usado."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Ok",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identity\": \"test-user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"token\",\n    \"token_type\": \"Bearer\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Block email",
@@ -72,9 +172,88 @@
 					"path": [
 						"blacklists"
 					]
-				}
+				},
+				"description": "Agregar un email a la lista negra global (blacklist)."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test-user@email.com\",\n    \"app_uuid\": \"{{$randomUUID}}\",\n    \"blocked_reason\": \"Test reason\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/blacklists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blacklists"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Email blocked successfully\"\n}"
+				},
+				{
+					"name": "Already blocked",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test-user@email.com\",\n    \"app_uuid\": \"{{$randomUUID}}\",\n    \"blocked_reason\": \"Test reason\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/blacklists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blacklists"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Email already blocked\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Validate email",
@@ -96,9 +275,84 @@
 							"value": "test-user@email.com"
 						}
 					]
-				}
+				},
+				"description": "Valida si un email está blacklisted o no."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Blocked ok",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blacklists/:email",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blacklists",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "test-user@email.com"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"blocked\": true,\n    \"blocked_reason\": \"Test reason\"\n}"
+				},
+				{
+					"name": "No blocked ok",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blacklists/:email",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blacklists",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "test-user1234567@email.com"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"blocked\": false\n}"
+				}
+			]
 		},
 		{
 			"name": "Reset DB",
@@ -113,9 +367,47 @@
 					"path": [
 						"blacklists"
 					]
-				}
+				},
+				"description": "Elimina todos los emails blacklisted."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Ok",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blacklists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blacklists"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"domain": "",
+							"path": ""
+						}
+					],
+					"body": "{\n    \"message\": \"All blocked emails deleted successfully\"\n}"
+				}
+			]
 		}
 	],
 	"auth": {
