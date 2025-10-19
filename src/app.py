@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended.exceptions import NoAuthorizationError
+from datetime import datetime
 from src.config import Config
 from src.resource.black_lists_resource import (
     BlackListsResource,
@@ -38,6 +39,12 @@ def expired_token_callback(jwt_header, jwt_payload):
 def handle_no_authorization_error(e):
     return jsonify({"message": "Token is required"}), 403
 
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({
+        "timestamp": datetime.now().isoformat()
+    })
 
 Base.metadata.create_all(engine)
 api = Api(app)
