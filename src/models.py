@@ -5,17 +5,9 @@ from src.config import Config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import Column, String, UUID, DateTime
-from src.utils import get_secret
 
-def get_rds_uri() -> str:
-    try:
-        rds_uri = get_secret('RdsUri')
-        return rds_uri
-    except Exception as e:
-        print(f'Failed to fetch RdsUri from secrets manager: {e}')
-        raise e
 
-rds_uri = get_rds_uri()
+rds_uri = Config.DB_URI
 engine = create_engine(rds_uri)
 Session = sessionmaker(bind=engine)
 Base = declarative_base()

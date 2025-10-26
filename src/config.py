@@ -8,5 +8,4 @@ class Config:
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "secret")
     JWT_TOKEN_LOCATION = ["headers"]
     JWT_ACCESS_TOKEN_EXPIRES = False  # For testing, tokens don't expire
-    AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    DB_URI = os.environ.get('DB_URI')
