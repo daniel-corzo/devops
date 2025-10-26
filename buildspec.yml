@@ -14,7 +14,7 @@ phases:
       - echo "DB_URI=$DB_URI" >> .env
 
   # Run unit tests
-  pre-build:
+  pre_build:
     commands:
       - echo "Running unit tests..."
       - pytests tests/ -v
