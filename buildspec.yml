@@ -17,7 +17,7 @@ phases:
   pre_build:
     commands:
       - echo "Running unit tests..."
-      - pytests tests/ -v
+      - pytest tests/ -v
       - echo "Unit tests passed successfully."
 
   # Build application (TODO)
