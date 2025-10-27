@@ -1,5 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
+import sys, os
 
 from src.config import Config
 
@@ -25,3 +26,13 @@ def get_secret(secret_name: str, region_name="us-east-2") -> str:
             return get_secret_value_response['SecretString']
     except ClientError as e:
         raise e
+
+
+def is_running_tests() -> bool:
+    if 'pytest' in sys.modules:
+        return True
+    if 'PYTEST_CURRENT_TEST' in os.environ:
+        return True
+        
+    return False
+

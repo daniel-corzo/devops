@@ -5,10 +5,13 @@ from src.config import Config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import Column, String, UUID, DateTime
+from src.utils import is_running_tests
 
 
-rds_uri = Config.DB_URI
-engine = create_engine(rds_uri)
+db_uri = Config.DB_URI
+if is_running_tests():
+    db_uri = 'sqlite:///:memory:'
+engine = create_engine(db_uri)
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
 session = Session()
