@@ -1,7 +1,7 @@
 version: 0.2
 
 env:
-  secrets_manager:
+  secrets-manager:
     DB_URI: "db-uri"
 
 phases:
