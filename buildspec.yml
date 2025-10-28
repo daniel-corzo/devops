@@ -25,10 +25,11 @@ phases:
   build:
     commands:
       - echo "Building Docker image..."
-      - docker build -t myapp:$CODEBUILD_BUILD_ID .
-      - echo "Saving Docker image as artifact..."
+      - SAFE_TAG=$(echo $CODEBUILD_BUILD_ID | tr ':' '-')
+      - echo "Using tag: myapp:$SAFE_TAG"
+      - docker build -t myapp:$SAFE_TAG .
       - mkdir -p artifact
-      - docker save myapp:$CODEBUILD_BUILD_ID -o artifact/app_image.tar
+      - docker save myapp:$SAFE_TAG -o artifact/app_image.tar
 
   post_build:
     commands:
