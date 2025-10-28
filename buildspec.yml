@@ -26,7 +26,7 @@ phases:
     commands:
       - echo "Building Docker image..."
       - SAFE_TAG=$(echo $CODEBUILD_BUILD_ID | tr ':' '-')
-      - echo "Using tag: myapp:$SAFE_TAG"
+      - echo "Using tag myapp:$SAFE_TAG"
       - docker build -t myapp:$SAFE_TAG .
       - mkdir -p artifact
       - docker save myapp:$SAFE_TAG -o artifact/app_image.tar
