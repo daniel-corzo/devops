@@ -269,3 +269,12 @@ def test_delete_all_blocked_emails(auth_token):
 
     blocked_emails = session.query(BlockedEmail).all()
     assert len(blocked_emails) == 0
+
+# HEALTH TESTS
+def test_health(auth_token):
+    res = client.get(
+        "/health",
+    )
+
+    assert res.status_code == 200
+    assert "timestamp" in res.json

@@ -10,6 +10,7 @@ phases:
       python: 3.13
     commands:
       - echo "Installing python dependencies..."
+      - pip install --upgrade pip
       - pip install -r requirements.txt
       - echo "DB_URI=$DB_URI" >> .env
 
@@ -24,3 +25,18 @@ phases:
   build:
     commands:
       - echo "Building Docker image..."
+      - docker build -t myapp:$CODEBUILD_BUILD_ID .
+      - echo "Saving Docker image as artifact..."
+      - mkdir -p artifact
+      - docker save myapp:$CODEBUILD_BUILD_ID -o artifact/app_image.tar
+
+  post_build:
+    commands:
+      - echo "Build completed on `date`"
+      - echo "Artifact prepared for S3 upload."
+
+artifacts:
+  files:
+    - artifact/app_image.tar
+  discard-paths: yes
+  base-directory: artifact
