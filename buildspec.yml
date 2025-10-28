@@ -28,8 +28,10 @@ phases:
       - SAFE_TAG=$(echo $CODEBUILD_BUILD_ID | tr ':' '-')
       - echo "Using tag myapp:$SAFE_TAG"
       - docker build -t myapp:$SAFE_TAG .
-      - mkdir -p artifact
-      - docker save myapp:$SAFE_TAG -o artifact/app_image.tar
+      - echo "Saving Docker image as TAR..."
+      - mkdir -p /tmp/artifact
+      - docker save myapp:$SAFE_TAG -o /tmp/artifact/app_image.tar
+      - ls -lh /tmp/artifact  # Verifica que el archivo existe
 
   post_build:
     commands:
@@ -38,6 +40,6 @@ phases:
 
 artifacts:
   files:
-    - artifact/app_image.tar
+    - app_image.tar
   discard-paths: yes
-  base-directory: artifact
+  base-directory: /tmp/artifact
