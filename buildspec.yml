@@ -21,7 +21,7 @@ phases:
       - pytest tests/ -v
       - echo "Unit tests passed successfully."
 
-  # Build application (TODO)
+  # Build application
   build:
     commands:
       - echo "Building Docker image..."
