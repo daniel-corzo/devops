@@ -21,25 +21,6 @@ phases:
       - pytest tests/ -v
       - echo "Unit tests passed successfully."
 
-  # Build application
-  build:
-    commands:
-      - echo "Building Docker image..."
-      - SAFE_TAG=$(echo $CODEBUILD_BUILD_ID | tr ':' '-')
-      - echo "Using tag myapp:$SAFE_TAG"
-      - docker build -t myapp:$SAFE_TAG .
-      - echo "Saving Docker image as TAR..."
-      - mkdir -p /tmp/artifact
-      - docker save myapp:$SAFE_TAG -o /tmp/artifact/app_image.tar
-      - ls -lh /tmp/artifact  # Verifica que el archivo existe
-
-  post_build:
-    commands:
-      - echo "Build completed on `date`"
-      - echo "Artifact prepared for S3 upload."
-
 artifacts:
   files:
-    - app_image.tar
-  discard-paths: yes
-  base-directory: /tmp/artifact
+    - '**/*'
