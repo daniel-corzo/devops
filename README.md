@@ -40,4 +40,3 @@ API will be available at `http://localhost:5000`
 ```bash
 pytest tests/ -v
 ```
- 
