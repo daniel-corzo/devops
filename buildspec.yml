@@ -9,18 +9,40 @@ phases:
     runtime-versions:
       python: 3.13
     commands:
+      - echo "Logging into ECR..."
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 683745400026.dkr.ecr.us-east-1.amazonaws.com
       - echo "Installing python dependencies..."
       - pip install --upgrade pip
       - pip install -r requirements.txt
       - echo "DB_URI=$DB_URI" >> .env
-
   # Run unit tests
   pre_build:
     commands:
       - echo "Running unit tests..."
       - pytest tests/ -v
       - echo "Unit tests passed successfully."
+  # Build docker image
+  build:
+    commands:
+      - echo "Building docker image..."
+      - docker build -t devops_app .
+      - docker tag devops_app:latest 683745400026.dkr.ecr.us-east-1.amazonaws.com/devops_app:latest
+  # Upload image to ECR
+  post_build:
+    commands:
+      - echo "Pushing image to ECR..."
+      - docker push 683745400026.dkr.ecr.us-east-1.amazonaws.com/devops_app:latest
 
 artifacts:
   files:
     - '**/*'
+    - imagedefinitions.json
+    - imageDetail.json
+secondary-artifacts:
+  DefinitionArtifact:
+    files:
+      - appspec.json
+      - taskdef.json
+  ImageArtifact:
+    files:
+      - imageDetail.json

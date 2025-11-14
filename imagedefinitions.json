@@ -1,0 +1,6 @@
+[
+    {
+        "name": "devops-app",
+        "imageUri": "683745400026.dkr.ecr.us-east-1.amazonaws.com/devops_app:latest"
+    }
+]
