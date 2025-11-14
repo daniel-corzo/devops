@@ -18,7 +18,7 @@
         "FARGATE"
     ],
     "networkMode": "awsvpc",
-    "cpu": "1024",
-    "memory": "3072",
+    "cpu": "512",
+    "memory": "1024",
     "family": "devops-fargate-task"
 }
