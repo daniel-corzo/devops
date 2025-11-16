@@ -43,10 +43,7 @@ def handle_no_authorization_error(e):
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({}), 500  # Temporary
-    # return jsonify({
-    #     "timestamp": datetime.now().isoformat()
-    # })
+    return jsonify({"timestamp": datetime.now().isoformat()})
 
 Base.metadata.create_all(engine)
 api = Api(app)
